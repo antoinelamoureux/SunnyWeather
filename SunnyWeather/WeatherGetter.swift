@@ -9,24 +9,41 @@
 import Foundation
 
 class WeatherGetter {
-    func getWeather(city: String, model: WeatherModel) {
+    var currentWeather: Empty?
+    var errorMessage = ""
     
-        let openWeatherMapAPIKey = "0b153cc5d92060174bdf208bc5cfa2a1"
-          
-        let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?\(city)&APPID=\(openWeatherMapAPIKey)")!
-        let task = URLSession.shared.dataTask(with: url, completionHandler: { data, response, error in
+        func weatherData(from url: URL, completion: @escaping () -> ()) {
+            URLSession.shared.dataTask(with: url) { (data, response, error ) in
+                guard let data = data else { return }
+                self.updateResults(data)
+                completion()
+            }.resume()
+        }
+        
+        func updateResults(_ data: Data) {
+            do {
+                let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                let rawFeed = try decoder.decode(Empty.self, from: data)
+                currentWeather = rawFeed
+            } catch let decodeError as NSError {
+                errorMessage += "Decoder error: \(decodeError.localizedDescription)"
+                print(errorMessage)
+                return
+            }
+        }
+        
+    func getResults(city: String, completionHandler: @escaping (Empty?) -> Void)  {
+            let openWeatherMapAPIKey = "0b153cc5d92060174bdf208bc5cfa2a1"
+            let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&APPID=\(openWeatherMapAPIKey)")
+        
+        weatherData(from: url!) {
+                DispatchQueue.main.async {
+                    let weather = self.currentWeather
+                    completionHandler(weather)
+                }
+            }
+        }
+    }
 
-          guard let data = data else { return }
-          do {
-            
-            let decoder = JSONDecoder()
-            let jsonData = try decoder.decode(WeatherModel.self, from: data)
-            
-            } catch let parseErr {
-            print("JSON Parsing Error", parseErr)
-            }
-            })
-                
-            task.resume()
-            }
-}
+
