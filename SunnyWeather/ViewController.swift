@@ -8,45 +8,93 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    let weatherGetter = WeatherGetter()
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    let tableView = UITableView()
+    var safeArea: UILayoutGuide!
     
-    let cityName: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    let temperature: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    var sections = ["", "Today", "This Week", "In the World"]
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         
-        view.addSubview(cityName)
-        view.addSubview(temperature)
+        tableView.delegate = self
+        tableView.dataSource = self
+        view.backgroundColor = .white
+        safeArea = view.layoutMarginsGuide
         
-        weatherGetter.getResults(city: "Paris,fr", completionHandler: { weather in
-            self.cityName.text = weather?.name
-            self.temperature.text = String(format: "%.0f", (weather?.main.temp ?? 0.0) - 273.15)
-            self.temperature.text? += "°C"
-        })
+        setupTableView()
+    }
+    
+    func setupTableView() {
+        tableView.register(MainTableViewCell.self, forCellReuseIdentifier: "MainTableViewCell")
+        tableView.register(TodayTableViewCell.self, forCellReuseIdentifier: "TodayTableViewCell")
+        tableView.register(WeekTableViewCell.self, forCellReuseIdentifier: "WeekTableViewCell")
+        tableView.register(WorldTableViewCell.self, forCellReuseIdentifier: "WorldTableViewCell")
         
+        tableView.separatorStyle = .none
+        
+        view.addSubview(tableView)
         setupLayout()
     }
     
+    
     private func setupLayout() {
-        cityName.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        cityName.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-        cityName.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        cityName.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        temperature.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        temperature.topAnchor.constraint(equalTo: cityName.bottomAnchor, constant: 50).isActive = true
-        temperature.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        temperature.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+    }
+
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 20))
+        headerView.backgroundColor = .white
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = sections[section]
+        label.font = .boldSystemFont(ofSize: 20)
+        headerView.addSubview(label)
+        label.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 20).isActive = true
+        label.rightAnchor.constraint(equalTo: headerView.rightAnchor).isActive = true
+        label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+        label.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(35)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if sections[indexPath.section] == "" {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
+            return cell
+        } else if sections[indexPath.section] == "Today" {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TodayTableViewCell", for: indexPath) as! TodayTableViewCell
+            return cell
+        } else if sections[indexPath.section] == "This Week" {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "WeekTableViewCell", for: indexPath) as! WeekTableViewCell
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "WorldTableViewCell", for: indexPath) as! WorldTableViewCell
+            return cell
+        }
     }
 }
+
 
