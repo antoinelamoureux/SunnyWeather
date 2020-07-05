@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var safeArea: UILayoutGuide!
     
     var sections = ["", "Today", "This Week", "In the World"]
+    let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     override func loadView() {
         super.loadView()
@@ -44,6 +45,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
     }
 
 
@@ -56,8 +58,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 20))
-        headerView.backgroundColor = .white
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 50))
+        headerView.backgroundColor = .clear
         
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +69,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         label.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 20).isActive = true
         label.rightAnchor.constraint(equalTo: headerView.rightAnchor).isActive = true
         label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         return headerView
     }
@@ -76,19 +77,36 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return CGFloat(35)
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat(35)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if sections[section] == "This Week" {
+            return days.count
+        } else {
         return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if sections[indexPath.section] == "" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
+            cell.selectionStyle = .none
             return cell
         } else if sections[indexPath.section] == "Today" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TodayTableViewCell", for: indexPath) as! TodayTableViewCell
             return cell
         } else if sections[indexPath.section] == "This Week" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekTableViewCell", for: indexPath) as! WeekTableViewCell
+            cell.textLabel?.text = days[indexPath.row]
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WorldTableViewCell", for: indexPath) as! WorldTableViewCell

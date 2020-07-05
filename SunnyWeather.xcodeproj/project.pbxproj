@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840D12A224B208640061D6A3 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */; };
 		849873C524B0D0520069E4C1 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */; };
 		849873C724B0D10D0069E4C1 /* WeekTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */; };
 		849873C924B0D1260069E4C1 /* WorldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
 		849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekTableViewCell.swift; sourceTree = "<group>"; };
 		849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTableViewCell.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				849873CA24B0DE100069E4C1 /* MainTableViewCell.swift */,
 				849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */,
 				849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */,
+				840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */,
 				849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */,
 				84A4D63224AFB1F5008CD519 /* WeatherGetter.swift */,
 				84A4D63824AFBC1E008CD519 /* WeatherModel.swift */,
@@ -166,6 +169,7 @@
 				849873CB24B0DE100069E4C1 /* MainTableViewCell.swift in Sources */,
 				849873C924B0D1260069E4C1 /* WorldTableViewCell.swift in Sources */,
 				849873C524B0D0520069E4C1 /* TodayTableViewCell.swift in Sources */,
+				840D12A224B208640061D6A3 /* TodayCollectionViewCell.swift in Sources */,
 				84A4D61F24AFB161008CD519 /* AppDelegate.swift in Sources */,
 				84A4D63924AFBC1E008CD519 /* WeatherModel.swift in Sources */,
 				84A4D62124AFB161008CD519 /* SceneDelegate.swift in Sources */,
