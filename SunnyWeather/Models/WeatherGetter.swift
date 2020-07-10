@@ -9,7 +9,7 @@
 import Foundation
 
 class WeatherGetter {
-    var currentWeather: Empty?
+    var currentWeather: WeatherModel?
     var errorMessage = ""
     
         func weatherData(from url: URL, completion: @escaping () -> ()) {
@@ -24,7 +24,7 @@ class WeatherGetter {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
-                let rawFeed = try decoder.decode(Empty.self, from: data)
+                let rawFeed = try decoder.decode(WeatherModel.self, from: data)
                 currentWeather = rawFeed
             } catch let decodeError as NSError {
                 errorMessage += "Decoder error: \(decodeError.localizedDescription)"
@@ -33,7 +33,7 @@ class WeatherGetter {
             }
         }
         
-    func getResults(city: String, completionHandler: @escaping (Empty?) -> Void)  {
+    func getResults(city: String, completionHandler: @escaping (WeatherModel?) -> Void)  {
             let openWeatherMapAPIKey = "0b153cc5d92060174bdf208bc5cfa2a1"
             let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?q=\(city)&APPID=\(openWeatherMapAPIKey)")
         

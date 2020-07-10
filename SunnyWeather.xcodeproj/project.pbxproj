@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		840D12A224B208640061D6A3 /* TodayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */; };
+		8411FBDA24B8B7AE0083F891 /* WorldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8411FBD924B8B7AE0083F891 /* WorldCollectionViewCell.swift */; };
 		849873C524B0D0520069E4C1 /* TodayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */; };
 		849873C724B0D10D0069E4C1 /* WeekTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */; };
 		849873C924B0D1260069E4C1 /* WorldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayCollectionViewCell.swift; sourceTree = "<group>"; };
+		8411FBD924B8B7AE0083F891 /* WorldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldCollectionViewCell.swift; sourceTree = "<group>"; };
 		849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTableViewCell.swift; sourceTree = "<group>"; };
 		849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekTableViewCell.swift; sourceTree = "<group>"; };
 		849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldTableViewCell.swift; sourceTree = "<group>"; };
@@ -53,6 +55,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8411FBDB24B8F0A80083F891 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				849873CA24B0DE100069E4C1 /* MainTableViewCell.swift */,
+				849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */,
+				849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */,
+				840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */,
+				8411FBD924B8B7AE0083F891 /* WorldCollectionViewCell.swift */,
+				849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8411FBDC24B8F0C90083F891 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				84A4D63224AFB1F5008CD519 /* WeatherGetter.swift */,
+				84A4D63824AFBC1E008CD519 /* WeatherModel.swift */,
+				84A4D63424AFB1F5008CD519 /* WeatherIcon.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		8411FBDD24B8F0F30083F891 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				84A4D62224AFB161008CD519 /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		84A4D61224AFB161008CD519 = {
 			isa = PBXGroup;
 			children = (
@@ -74,17 +107,11 @@
 			children = (
 				84A4D61E24AFB161008CD519 /* AppDelegate.swift */,
 				84A4D62024AFB161008CD519 /* SceneDelegate.swift */,
-				84A4D62224AFB161008CD519 /* ViewController.swift */,
-				849873CA24B0DE100069E4C1 /* MainTableViewCell.swift */,
-				849873C424B0D0520069E4C1 /* TodayTableViewCell.swift */,
-				849873C624B0D10D0069E4C1 /* WeekTableViewCell.swift */,
-				840D12A124B208640061D6A3 /* TodayCollectionViewCell.swift */,
-				849873C824B0D1260069E4C1 /* WorldTableViewCell.swift */,
-				84A4D63224AFB1F5008CD519 /* WeatherGetter.swift */,
-				84A4D63824AFBC1E008CD519 /* WeatherModel.swift */,
-				84A4D63424AFB1F5008CD519 /* WeatherIcon.swift */,
-				84A4D62424AFB161008CD519 /* Main.storyboard */,
+				8411FBDC24B8F0C90083F891 /* Models */,
+				8411FBDB24B8F0A80083F891 /* Views */,
+				8411FBDD24B8F0F30083F891 /* Controllers */,
 				84A4D62724AFB16F008CD519 /* Assets.xcassets */,
+				84A4D62424AFB161008CD519 /* Main.storyboard */,
 				84A4D62924AFB16F008CD519 /* LaunchScreen.storyboard */,
 				84A4D62C24AFB16F008CD519 /* Info.plist */,
 			);
@@ -169,6 +196,7 @@
 				849873CB24B0DE100069E4C1 /* MainTableViewCell.swift in Sources */,
 				849873C924B0D1260069E4C1 /* WorldTableViewCell.swift in Sources */,
 				849873C524B0D0520069E4C1 /* TodayTableViewCell.swift in Sources */,
+				8411FBDA24B8B7AE0083F891 /* WorldCollectionViewCell.swift in Sources */,
 				840D12A224B208640061D6A3 /* TodayCollectionViewCell.swift in Sources */,
 				84A4D61F24AFB161008CD519 /* AppDelegate.swift in Sources */,
 				84A4D63924AFBC1E008CD519 /* WeatherModel.swift in Sources */,

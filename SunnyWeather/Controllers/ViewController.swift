@@ -74,7 +74,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(35)
+        return CGFloat(55)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -107,6 +107,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         } else if sections[indexPath.section] == "This Week" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekTableViewCell", for: indexPath) as! WeekTableViewCell
             cell.textLabel?.text = days[indexPath.row]
+            let iconImageView = UIImageView.init(frame: CGRect(x:-20, y:0, width:35, height:25))
+            iconImageView.image = UIImage(systemName: "cloud.sun")
+            let label = UILabel.init(frame: CGRect(x:-200, y:0, width:135, height:35))
+            label.text = "ddsdfdsf"
+            label.textColor = .darkGray
+            iconImageView.addSubview(label)
+            cell.accessoryView = iconImageView
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WorldTableViewCell", for: indexPath) as! WorldTableViewCell
