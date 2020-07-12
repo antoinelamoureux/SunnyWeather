@@ -11,12 +11,19 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
     var safeArea: UILayoutGuide!
+    let dateAndTime = DateAndTime()
+    let weatherIcon = WeatherIcon()
     
     var sections = ["", "Today", "This Week", "In the World"]
     let days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     override func loadView() {
         super.loadView()
+        
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.compactAppearance?.shadowColor = .clear
+        navigationController?.isNavigationBarHidden = true
+        navigationController?.navigationBar.isHidden = true
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -74,7 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(55)
+        return CGFloat(25)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -85,7 +92,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat(35)
+        return CGFloat(15)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -99,6 +106,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if sections[indexPath.section] == "" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as! MainTableViewCell
+            cell.contentView.isUserInteractionEnabled = true;
+            cell.detailsButton.addTarget(self, action: #selector(detailsTapped), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
         } else if sections[indexPath.section] == "Today" {
@@ -106,12 +115,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             return cell
         } else if sections[indexPath.section] == "This Week" {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WeekTableViewCell", for: indexPath) as! WeekTableViewCell
-            cell.textLabel?.text = days[indexPath.row]
             let iconImageView = UIImageView.init(frame: CGRect(x:-20, y:0, width:35, height:25))
             iconImageView.image = UIImage(systemName: "cloud.sun")
             let label = UILabel.init(frame: CGRect(x:-200, y:0, width:135, height:35))
-            label.text = "ddsdfdsf"
-            label.textColor = .darkGray
+            
+            let url = URL(string:"https://api.openweathermap.org/data/2.5/onecall?lat=48.8534&lon=2.3488&appid=0b153cc5d92060174bdf208bc5cfa2a1")
+            
+            let task = URLSession.shared.emptyTask(with: url!) { empty, response, error in
+                if let empty = empty {
+                    DispatchQueue.main.async {
+                        cell.textLabel?.text = self.dateAndTime.getDayForDate(Date(timeIntervalSince1970: Double(empty.daily[indexPath.row].dt)))
+                        label.textColor = .darkGray
+                        label.text = String(format: "%.0f", empty.daily[indexPath.row].temp.day - 273.15)
+                        label.text? += "° "
+                        label.text? += empty.daily[indexPath.row].weather[0].weatherDescription.rawValue
+                        iconImageView.image = UIImage(systemName: "\(self.weatherIcon.weatherIconSet(icon: empty.daily[indexPath.row].weather[0].icon))")
+                    }
+                }
+            }
+            task.resume()
+            
             iconImageView.addSubview(label)
             cell.accessoryView = iconImageView
             return cell
@@ -119,6 +142,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCell(withIdentifier: "WorldTableViewCell", for: indexPath) as! WorldTableViewCell
             return cell
         }
+    }
+    
+    @objc func detailsTapped() {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

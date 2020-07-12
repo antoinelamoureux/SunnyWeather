@@ -9,6 +9,8 @@
 import UIKit
 
 class TodayTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    let dateAndTime = DateAndTime()
+    let weatherIcon = WeatherIcon()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,15 +46,29 @@ class TodayTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 150)
+        return CGSize(width: 70, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return 24
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodayCollectionViewCell", for: indexPath) as! TodayCollectionViewCell
+        let url = URL(string:"https://api.openweathermap.org/data/2.5/onecall?lat=48.8534&lon=2.3488&appid=0b153cc5d92060174bdf208bc5cfa2a1")
+        
+        let task = URLSession.shared.emptyTask(with: url!) { empty, response, error in
+            if let empty = empty {
+                DispatchQueue.main.async {
+                    let hour = self.dateAndTime.getHourForDate(Date(timeIntervalSince1970: Double(empty.hourly[indexPath.row].dt)))
+                    cell.cityLabel.text = hour
+                    cell.iconImageView.image = UIImage(systemName: "\(self.weatherIcon.weatherIconSet(icon: empty.hourly[indexPath.row].weather[0].icon))")
+                    cell.tempLabel.text = String(format: "%.0f", empty.hourly[indexPath.row].temp - 273.15)
+                    cell.tempLabel.text? += "°C"
+                }
+            }
+        }
+        task.resume()
         return cell
     }
     

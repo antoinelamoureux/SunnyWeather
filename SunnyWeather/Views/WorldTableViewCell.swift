@@ -9,7 +9,9 @@
 import UIKit
 
 class WorldTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-    let cities = ["Paris,fr", "London, uk", "Berlin,de", "Rome,it", "Madrid,es", "Beijing,cn", "Brazilia,br", "Tokyo,jp"]
+    let weatherIcon = WeatherIcon()
+
+    let cities = ["Paris,fr", "London,uk", "Berlin,de", "Rome,it", "Madrid,es", "Beijing,cn", "Brazilia,br", "Tokyo,jp"]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -46,7 +48,7 @@ class WorldTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 150)
+        return CGSize(width: 70, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -55,19 +57,22 @@ class WorldTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollect
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WorldCollectionViewCell", for: indexPath) as! WorldCollectionViewCell
-        let url = URL(string:"https://api.openweathermap.org/data/2.5/weather?q=\(cities[indexPath.item])&APPID=0b153cc5d92060174bdf208bc5cfa2a1")
         
-        let task = URLSession.shared.weatherModelTask(with: (url ?? URL(string:"https://api.openweathermap.org/data/2.5/weather?q=Paris,fr&APPID=0b153cc5d92060174bdf208bc5cfa2a1"))!) { weatherModel, response, error in
-            if let weatherModel = weatherModel {
+        let url = URL(string:"https://api.openweathermap.org/data/2.5/onecall?lat=48.8534&lon=2.3488&appid=0b153cc5d92060174bdf208bc5cfa2a1")
+        
+        let task = URLSession.shared.emptyTask(with: url!) { empty, response, error in
+            if let empty = empty {
                 DispatchQueue.main.async {
-                    cell.cityLabel.text = self.cities[indexPath.item]
-                    cell.iconImageView.image = UIImage(systemName: "cloud.sun")
-                    cell.tempLabel.text = String(format: "%.0f", weatherModel.main.tempMin  - 273.15) + "/" + String(format: "%.0f", weatherModel.main.tempMax  - 273.15)
+                    cell.cityLabel.text = "Chicago"
+                    cell.iconImageView.image = UIImage(systemName: "\(self.weatherIcon.weatherIconSet(icon: empty.current.weather[0].icon))")
+                    cell.tempLabel.text = String(format: "%.0f", empty.current.temp - 273.15)
                     cell.tempLabel.text? += "°C"
                 }
+                
             }
         }
         task.resume()
+        
         return cell
     }
     

@@ -36,20 +36,6 @@ class TodayCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(iconImageView)
         contentView.addSubview(tempLabel)
         
-        let url = URL(string:"https://api.openweathermap.org/data/2.5/weather?q=Paris,fr&APPID=0b153cc5d92060174bdf208bc5cfa2a1")
-        
-        let task = URLSession.shared.weatherModelTask(with: url!) { weatherModel, response, error in
-            if let weatherModel = weatherModel {
-                DispatchQueue.main.async {
-                    self.cityLabel.text = "cities"
-                    self.iconImageView.image = UIImage(systemName: "cloud.sun")
-                    self.tempLabel.text = String(format: "%.0f", weatherModel.main.tempMin  - 273.15) + "/" + String(format: "%.0f", weatherModel.main.tempMax  - 273.15)
-                    self.tempLabel.text? += "°C"
-                }
-            }
-        }
-        task.resume()
-        
         setupLayout()
     }
     

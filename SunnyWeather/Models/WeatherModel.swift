@@ -1,13 +1,13 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   let weatherModel = try? newJSONDecoder().decode(WeatherModel.self, from: jsonData)
+//   let empty = try? newJSONDecoder().decode(Empty.self, from: jsonData)
 
 //
 // To read values from URLs:
 //
-//   let task = URLSession.shared.weatherModelTask(with: url) { weatherModel, response, error in
-//     if let weatherModel = weatherModel {
+//   let task = URLSession.shared.emptyTask(with: url) { empty, response, error in
+//     if let empty = empty {
 //       ...
 //     }
 //   }
@@ -15,91 +15,53 @@
 
 import Foundation
 
-// MARK: - WeatherModel
-struct WeatherModel: Codable {
-    let coord: Coord
-    let weather: [Weather]
-    let base: String
-    let main: Main
-    let visibility: Int
-    let wind: Wind
-    let clouds: Clouds
-    let dt: Int
-    let sys: Sys
-    let timezone, id: Int
-    let name: String
-    let cod: Int
-}
-
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.cloudsTask(with: url) { clouds, response, error in
-//     if let clouds = clouds {
-//       ...
-//     }
-//   }
-//   task.resume()
-
-// MARK: - Clouds
-struct Clouds: Codable {
-    let all: Int
-}
-
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.coordTask(with: url) { coord, response, error in
-//     if let coord = coord {
-//       ...
-//     }
-//   }
-//   task.resume()
-
-// MARK: - Coord
-struct Coord: Codable {
-    let lon, lat: Double
-}
-
-//
-// To read values from URLs:
-//
-//   let task = URLSession.shared.mainTask(with: url) { main, response, error in
-//     if let main = main {
-//       ...
-//     }
-//   }
-//   task.resume()
-
-// MARK: - Main
-struct Main: Codable {
-    let temp, feelsLike, tempMin, tempMax: Double
-    let pressure, humidity: Int
+// MARK: - Empty
+struct Empty: Codable {
+    let lat, lon: Double
+    let timezone: String
+    let timezoneOffset: Int
+    let current: Current
+    let hourly: [Hourly]
+    let daily: [Daily]
     
     enum CodingKeys: String, CodingKey {
-        case temp
-        case feelsLike = "feels_like"
-        case tempMin = "temp_min"
-        case tempMax = "temp_max"
-        case pressure, humidity
+        case lat, lon, timezone
+        case timezoneOffset = "timezone_offset"
+        case current, hourly, daily
     }
 }
 
 //
 // To read values from URLs:
 //
-//   let task = URLSession.shared.sysTask(with: url) { sys, response, error in
-//     if let sys = sys {
+//   let task = URLSession.shared.currentTask(with: url) { current, response, error in
+//     if let current = current {
 //       ...
 //     }
 //   }
 //   task.resume()
 
-// MARK: - Sys
-struct Sys: Codable {
-    let type, id: Int
-    let country: String
-    let sunrise, sunset: Int
+// MARK: - Current
+struct Current: Codable {
+    let dt, sunrise, sunset: Int
+    let temp, feelsLike: Double
+    let pressure, humidity: Int
+    let dewPoint, uvi: Double
+    let clouds, visibility: Int
+    let windSpeed: Double
+    let windDeg: Int
+    let weather: [Weather]
+    
+    enum CodingKeys: String, CodingKey {
+        case dt, sunrise, sunset, temp
+        case feelsLike = "feels_like"
+        case pressure, humidity
+        case dewPoint = "dew_point"
+        case uvi, clouds, visibility
+        case windSpeed = "wind_speed"
+        case windDeg = "wind_deg"
+        case weather
+    }
 }
 
 //
@@ -115,7 +77,9 @@ struct Sys: Codable {
 // MARK: - Weather
 struct Weather: Codable {
     let id: Int
-    let main, weatherDescription, icon: String
+    let main: Main
+    let weatherDescription: Description
+    let icon: String
     
     enum CodingKeys: String, CodingKey {
         case id, main
@@ -124,20 +88,118 @@ struct Weather: Codable {
     }
 }
 
+enum Main: String, Codable {
+    case clear = "Clear"
+    case clouds = "Clouds"
+    case rain = "Rain"
+}
+
+enum Description: String, Codable {
+    case brokenClouds = "broken clouds"
+    case clearSky = "clear sky"
+    case fewClouds = "few clouds"
+    case lightRain = "light rain"
+    case moderateRain = "moderate rain"
+    case overcastClouds = "overcast clouds"
+    case scatteredClouds = "scattered clouds"
+}
+
 //
 // To read values from URLs:
 //
-//   let task = URLSession.shared.windTask(with: url) { wind, response, error in
-//     if let wind = wind {
+//   let task = URLSession.shared.dailyTask(with: url) { daily, response, error in
+//     if let daily = daily {
 //       ...
 //     }
 //   }
 //   task.resume()
 
-// MARK: - Wind
-struct Wind: Codable {
-    let speed: Double
-    let deg: Int
+// MARK: - Daily
+struct Daily: Codable {
+    let dt, sunrise, sunset: Int
+    let temp: Temp
+    let feelsLike: FeelsLike
+    let pressure, humidity: Int
+    let dewPoint, windSpeed: Double
+    let windDeg: Int
+    let weather: [Weather]
+    let clouds: Int
+    let uvi: Double
+    let rain: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case dt, sunrise, sunset, temp
+        case feelsLike = "feels_like"
+        case pressure, humidity
+        case dewPoint = "dew_point"
+        case windSpeed = "wind_speed"
+        case windDeg = "wind_deg"
+        case weather, clouds, uvi, rain
+    }
+}
+
+//
+// To read values from URLs:
+//
+//   let task = URLSession.shared.feelsLikeTask(with: url) { feelsLike, response, error in
+//     if let feelsLike = feelsLike {
+//       ...
+//     }
+//   }
+//   task.resume()
+
+// MARK: - FeelsLike
+struct FeelsLike: Codable {
+    let day, night, eve, morn: Double
+}
+
+//
+// To read values from URLs:
+//
+//   let task = URLSession.shared.tempTask(with: url) { temp, response, error in
+//     if let temp = temp {
+//       ...
+//     }
+//   }
+//   task.resume()
+
+// MARK: - Temp
+struct Temp: Codable {
+    let day, min, max, night: Double
+    let eve, morn: Double
+}
+
+//
+// To read values from URLs:
+//
+//   let task = URLSession.shared.hourlyTask(with: url) { hourly, response, error in
+//     if let hourly = hourly {
+//       ...
+//     }
+//   }
+//   task.resume()
+
+// MARK: - Hourly
+struct Hourly: Codable {
+    let dt: Int
+    let temp, feelsLike: Double
+    let pressure, humidity: Int
+    let dewPoint: Double
+    let clouds: Int
+    let windSpeed: Double
+    let windDeg: Int
+    let weather: [Weather]
+    
+    enum CodingKeys: String, CodingKey {
+        case dt, temp
+        case feelsLike = "feels_like"
+        case pressure, humidity
+        case dewPoint = "dew_point"
+        case clouds
+        case windSpeed = "wind_speed"
+        case windDeg = "wind_deg"
+        case weather
+    }
 }
 
 // MARK: - Helper functions for creating encoders and decoders
@@ -171,7 +233,7 @@ extension URLSession {
         }
     }
     
-    func weatherModelTask(with url: URL, completionHandler: @escaping (WeatherModel?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
+    func emptyTask(with url: URL, completionHandler: @escaping (Empty?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         return self.codableTask(with: url, completionHandler: completionHandler)
     }
 }
